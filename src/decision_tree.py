@@ -2,7 +2,8 @@ import numpy as np
 
 class Node:
     def __init__(self, feature_index=None,threshold=None, 
-                 left=None,right=None,*,value=None):
+                    left=None,right=None,*,value=None, 
+                    gini=None, samples=None):
         """
             feature index - indice de la columna evaluada en el nodo,
             threshold - valor de corte para comparar,
@@ -14,6 +15,8 @@ class Node:
         self.left = left
         self.right = right
         self.value = value
+        self.gini = gini
+        self.samples = samples
 
     def is_leaf(self) -> bool:
         """
@@ -137,20 +140,19 @@ class DecisionTree:
         """
 
         n_samples = len(y)
+        current_gini = self._impurity(y)
 
-        # --- Condiciones de parada ---
         if (depth >= self.max_depth
                 or n_samples < self.min_samples_split
-                or self._impurity(y) == 0):
+                or current_gini == 0):
             leaf_value = self._majority_class(y)
-            return Node(value=leaf_value)
+            return Node(value=leaf_value, gini=current_gini, samples=n_samples)
 
         feature_index, threshold, gain = self._best_split(X, y)
 
-        # Si ningún split mejora la impureza, se detiene la recursión
         if feature_index is None or gain <= 0:
             leaf_value = self._majority_class(y)
-            return Node(value=leaf_value)
+            return Node(value=leaf_value, gini=current_gini, samples=n_samples)
 
         X_left, y_left, X_right, y_right = self._split_dataset(
             X, y, feature_index, threshold
@@ -162,8 +164,11 @@ class DecisionTree:
             feature_index=feature_index,
             threshold=threshold,
             left=left_subtree,
-            right=right_subtree
+            right=right_subtree,
+            gini=current_gini,
+            samples=n_samples
         )
+
 
     def fit(self, X: np.ndarray, y: np.ndarray):
         self.root = self._build_tree(X, y, depth=0)
