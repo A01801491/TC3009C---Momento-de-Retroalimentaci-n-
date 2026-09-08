@@ -1,5 +1,3 @@
-# main2.py
-
 import glob
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -10,7 +8,7 @@ from src.random_forest import SpotifyRandomForest
 
 
 def print_confusion_matrix(cm: np.ndarray) -> None:
-    """Imprime la matriz de confusión con formato legible en consola."""
+    """Matriz de confusión"""
     print("\n" + "=" * 44)
     print("         MATRIZ DE CONFUSIÓN")
     print("=" * 44)
@@ -21,7 +19,7 @@ def print_confusion_matrix(cm: np.ndarray) -> None:
 
 
 def print_feature_importances(rf: SpotifyRandomForest, top_n: int = 10) -> None:
-    """Imprime las top_n features más importantes del ensemble."""
+    """top_n features más importantes del ensemble."""
     print(f"\n{'='*44}")
     print(f"  TOP {top_n} FEATURES POR IMPORTANCIA (Gini)")
     print(f"{'='*44}")
@@ -33,41 +31,29 @@ def print_feature_importances(rf: SpotifyRandomForest, top_n: int = 10) -> None:
 
 if __name__ == "__main__":
 
-    # ------------------------------------------------------------------
-    # 1. Carga y preprocesamiento (mismo pipeline que main.py)
-    # ------------------------------------------------------------------
     json_files = glob.glob("data/Streaming_History_Audio_2026*.json")
     processor  = DataProcessor(json_paths=json_files)
     X, y       = processor.process()
 
-    print(f"Shape de X       : {X.shape}")
+    print(f"Shape de X: {X.shape}")
     print(f"Balance de clases: {y.mean():.2%} positivos (skipped=1)")
     print(f"Clase 0: {(y==0).sum()} muestras | Clase 1: {(y==1).sum()} muestras")
 
-    # ------------------------------------------------------------------
-    # 2. Split estratificado (idéntico al de main.py para comparación justa)
-    # ------------------------------------------------------------------
+    # Split estratificado (idéntico al de main.py para comparación justa)
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
     print(f"\nTrain: {X_train.shape[0]} muestras | Test: {X_test.shape[0]} muestras")
 
-    # ------------------------------------------------------------------
-    # 3. Entrenamiento del Random Forest con class_weight='balanced'
-    # ------------------------------------------------------------------
-    print("\nEntrenando Random Forest (n_estimators=200, class_weight='balanced')...")
-
+    # Input de hiperparametros
     rf = SpotifyRandomForest(
         n_estimators=200,
-        max_depth=10,
+        max_depth=5,
         min_samples_split=5,
     )
     rf.fit(X_train, y_train, feature_names=processor.feature_names)
-    print("¡Entrenamiento completado!")
 
-    # ------------------------------------------------------------------
-    # 4. Predicciones y métricas
-    # ------------------------------------------------------------------
+    # Predicciones y métricas
     y_pred = rf.predict(X_test)
 
     print_confusion_matrix(confusion_matrix(y_test, y_pred))
@@ -82,7 +68,26 @@ if __name__ == "__main__":
         target_names=["Clase 0 (no skip)", "Clase 1 (skip)"]
     ))
 
-    # ------------------------------------------------------------------
-    # 5. Interpretabilidad del ensemble
-    # ------------------------------------------------------------------
     print_feature_importances(rf, top_n=10)
+
+    # Árbol más representativo del ensemble
+    import numpy as np
+    from sklearn.metrics import accuracy_score
+
+    accuracies = [
+        accuracy_score(y_test, estimator.predict(X_test))
+        for estimator in rf.model.estimators_
+    ]
+    best_index = int(np.argmin(np.abs(np.array(accuracies) - np.mean(accuracies))))
+    print(f"Árbol seleccionado: #{best_index}  (accuracy={accuracies[best_index]:.4f})")
+
+
+    # Visualiza el árbol del ensemble (el más representativo)
+    rf.export_single_tree(
+        tree_index    = best_index,
+        class_names   = ["no skip", "skip"],
+        max_depth_viz = 5,
+        output_path   = "docs/arbol_viz.png",
+        figsize       = (50, 10),
+        dpi           = 200,
+    )
