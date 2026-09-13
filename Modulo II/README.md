@@ -18,6 +18,7 @@ Implementación de un algoritmo de clasificación desarrollado completamente des
 #### Intrucciones de uso: Resultados de CART
 Para ejecutar el primer modelo sin el uso de framework:
 ```bash
+cd '.\Modulo II\'
 python main.py
 ```
 
@@ -28,6 +29,7 @@ Implementación de un modelo ensamblado (Random Forest) empleando librerías de 
 #### Intrucciones de uso: Resiltados Random Forest
 Para ejecutar el segundo modelo con el uso de framework:
 ```bash
+cd '.\Modulo II\'
 python main2.py
 ```
 
@@ -38,6 +40,7 @@ Análisis profundo de la varianza, el sesgo (bias) y el nivel de ajuste (fitting
 #### Intrucciones de uso: Diagnóstico y Regularización (Train/Val/Test)
 Para ejecutar el diagnóstico de varianza/sesgo y entrenar el modelo regularizado:
 ```bash
+cd '.\Modulo II\'
 python main3.py
 ```
 
