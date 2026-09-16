@@ -73,11 +73,13 @@ print(classification_report(y_val, y_pred_val_base))
 print("\n-> MODELO REGULARIZADO (Técnicas de Ajuste)")
 print("Aplicando regularización estricta: bajando max_depth y subiendo min_samples_split")
 
-# Usamos tu misma clase, pero aplicamos regularización con sus hiperparámetros
+# Seleccionado de las main3.ipynb (se realizado randomizedserachcv y después grisearchcv)
 rf_reg = SpotifyRandomForest(
-    n_estimators=200,        # Más árboles para mayor robustez
-    max_depth=8,             # REGULARIZACIÓN 1: Poda de profundidad
-    min_samples_split=40,    # REGULARIZACIÓN 2: Exige más datos para ramificar
+    criterion='entropy',
+    max_depth=4,
+    max_features=None,
+    min_samples_split=7,
+    n_estimators=75,
     random_state=42
 )
 # Nota: la clase ya incluye class_weight="balanced" 
@@ -112,5 +114,5 @@ print("\n-> RENDIMIENTO FINAL EN TEST SET (Datos nunca vistos)")
 y_pred_test = rf_reg.predict(X_test)
 print(classification_report(y_test, y_pred_test))
 
-+print("\nVisualización exportada")
+print("\nVisualización exportada")
 rf_reg.export_single_tree(tree_index=0, max_depth_viz=8, output_path="docs/rf_tree_viz.png")
