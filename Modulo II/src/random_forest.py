@@ -18,6 +18,7 @@ class SpotifyRandomForest:
         max_depth: int = 15,
         min_samples_split: int = 8,
         max_features: str = "sqrt",
+        criterion: str = "gini",     # NUEVO: Añadimos el criterio
         random_state: int = 42,
     ):
         """
@@ -25,6 +26,7 @@ class SpotifyRandomForest:
             max_depth: Profundidad máxima de cada árbol
             min_samples_split: Mínimo de muestras para intentar un split
             max_features: Features evaluadas por split ('sqrt' es estándar CART)
+            criterion: Función para medir la calidad del split ('gini' o 'entropy')
             random_state: Semilla para reproducibilidad.
         """
         self.model = RandomForestClassifier(
@@ -32,9 +34,10 @@ class SpotifyRandomForest:
             max_depth=max_depth,
             min_samples_split=min_samples_split,
             max_features=max_features,
+            criterion=criterion,         # NUEVO: Se lo pasamos al modelo
             class_weight="balanced",
             random_state=random_state,
-            n_jobs=-1,  # usa todos los núcleos disponibles
+            n_jobs=-1,  
         )
         self.feature_names: list = []
 
@@ -84,7 +87,7 @@ class SpotifyRandomForest:
         class_names: list = None,
         max_depth_viz: int = 3,
         output_path: str = "docs/arbol_viz.png",
-        figsize: tuple = (24, 10),
+        figsize: tuple = (75, 10),
         dpi: int = 200,
     ) -> None:
         """
