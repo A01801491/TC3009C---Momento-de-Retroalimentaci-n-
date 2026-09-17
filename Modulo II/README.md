@@ -53,7 +53,10 @@ python main3.py
 │   ├── Resultados del ... # PDF de la primera entrega (CART Manual)
 │   ├── Resultados de ...2 # PDF de la segunda entrega (Random Forest)
 │   └── Resultados de ...3 # PDF de la tercera entrega
-├── notebooks/             # Entornos interactivos secundarios de exploración (EDA)
+├── notebooks/             # Entornos interactivos secundarios de exploración
+│   ├── 01_eda.ipynb       # EDA incial donde se definio como hacer \src\data_processing.py
+│   ├── exploration1.ipynb # Notebook para graficar la matriz de decisión e imprimir el arbol de decisión (entrega 1)
+│   └── exploration3.ipynb # Notebook para encontrar los p¿hiperparametros para el modelo regularizado (entrega 3)
 ├── src/                   # Código fuente modular
 │   ├── data_processing.py # Pipeline de limpieza, ingeniería de características (Frecuency & One-Hot Encoding) y Lista Blanca
 │   ├── decision_tree.py   # Lógica matemática central del Árbol manual y la clase Node

@@ -87,7 +87,7 @@ class SpotifyRandomForest:
         class_names: list = None,
         max_depth_viz: int = 3,
         output_path: str = "docs/arbol_viz.png",
-        figsize: tuple = (75, 10),
+        figsize: tuple = (25, 5),
         dpi: int = 200,
     ) -> None:
         """
