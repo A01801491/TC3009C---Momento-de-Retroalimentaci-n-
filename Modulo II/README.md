@@ -30,6 +30,8 @@ Implementación de un modelo ensamblado (Random Forest) empleando librerías de 
 Para ejecutar el segundo modelo con el uso de framework:
 ```bash
 cd '.\Modulo II\'
+```
+```bash
 python main2.py
 ```
 
@@ -41,6 +43,8 @@ Análisis profundo de la varianza, el sesgo (bias) y el nivel de ajuste (fitting
 Para ejecutar el modelo base, el modelo regularizado (su arbol), ambas matrices de confusión y comparación de las métricas:
 ```bash
 cd '.\Modulo II\'
+```
+``` bash
 python main3.py
 ```
 
@@ -48,8 +52,8 @@ Para ejecutar el diagnóstico de varianza/sesgo y el analisis de RandomizedSearc
 main3.py:
 ```bash
 cd '.\Modulo II\notebooks'
-python exploration3.py
 ```
+Then run `exploration3.ipynb`.
 
 ## 📂 Arquitectura del Repositorio
 
