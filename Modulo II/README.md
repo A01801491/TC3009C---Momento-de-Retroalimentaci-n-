@@ -38,10 +38,17 @@ python main2.py
 Análisis profundo de la varianza, el sesgo (bias) y el nivel de ajuste (fitting) del modelo Random Forest. Esta etapa implementa una partición tripartita (Entrenamiento, Validación y Prueba) para diagnosticar el comportamiento del algoritmo frente a datos invisibles. Posteriormente, se aplican técnicas de regularización (control de profundidad, poda de hojas y balanceo de pesos de clases) para mitigar el sobreajuste y mejorar la sensibilidad hacia la clase minoritaria (canciones saltadas).
 
 #### Intrucciones de uso: Diagnóstico y Regularización (Train/Val/Test)
-Para ejecutar el diagnóstico de varianza/sesgo y entrenar el modelo regularizado:
+Para ejecutar el modelo base, el modelo regularizado (su arbol), ambas matrices de confusión y comparación de las métricas:
 ```bash
 cd '.\Modulo II\'
 python main3.py
+```
+
+Para ejecutar el diagnóstico de varianza/sesgo y el analisis de RandomizedSearchCv y GridSearchCv para la selección de los hiperparametros finales para el modelo regularizado de 
+main3.py:
+```bash
+cd '.\Modulo II\notebooks'
+python exploration3.py
 ```
 
 ## 📂 Arquitectura del Repositorio
